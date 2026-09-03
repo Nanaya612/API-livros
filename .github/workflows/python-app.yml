@@ -32,4 +32,5 @@ jobs:
               env:
                 SENHA_USUARIO: "321"
                 LOGIN_USUARIO: "Arthur"
+                DATABASE_URL: "sqlite://"
               run: poetry run pytest
