@@ -1,0 +1,25 @@
+name: FastAPI-Check
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        
+        steps:
+            - name: Checar código
+              uses: actions/checkout@v4
+            - name: Instalar Python 3.9
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.9'
+            - name: Instalar Poetry
+              run: pip install poetry
+            - name: Instalar dependências do projeto
+              run: poetry install --no-root --no-interaction

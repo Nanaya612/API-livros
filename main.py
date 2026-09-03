@@ -6,6 +6,8 @@ from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from dotenv import load_dotenv
 import os, secrets, redis, json
 
+# CONFIGURAÇÕES/FUNÇÕES ================================================================================================
+
 # Isso para carregar as variáves de ambiente primeiro.
 load_dotenv()
 
@@ -16,7 +18,8 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 # Criação do client do redis.
-redis_client = redis.asyncio.Redis(host='redis', port=6379, db=0, decode_responses=True)
+REDIS_HOST = os.getenv("REDIS_HOST")
+redis_client = redis.asyncio.Redis(host=REDIS_HOST, port=6379, db=0, decode_responses=True)
 
 # modelo de criação da tabela onde é armazenado os livros no banco de dados.
 class LivroDB(Base):
@@ -56,7 +59,7 @@ SENHA_USUARIO = os.getenv("SENHA_USUARIO")
 async def salvar_livros_redis(cache_key: str, livros: dict):
     chave = cache_key
     dados_json = json.dumps(livros)
-    await redis_client.setex(chave, 300, dados_json)
+    await redis_client.set(chave, dados_json, ex=300)
 async def deletar_livros_redis():
     await redis_client.delete("livros")
 
@@ -78,6 +81,7 @@ def autendicacao(credentials: HTTPBasicCredentials = Depends(security)):
         raise HTTPException(status_code=401,detail="Senha ou usuario invalidos.",headers={"WWW-Authenticate":"Basic"})
 
 
+#ENDPOITS ==============================================================================================================
 
 # Endpoint principal para o método GET: primeiro confere se tem as informações no cache, caso tenha ele ja entrega a resposta, caso não ele retorna do banco de dados e salva um novo cache. 
 @app.get("/livros")
