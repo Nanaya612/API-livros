@@ -30,3 +30,8 @@ build-backend = "poetry.core.masonry.api"
 pythonpath = ["."]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
+
+[dependency-groups]
+dev = [
+    "httpx2 (>=2.12.0,<3.0.0)"
+]
