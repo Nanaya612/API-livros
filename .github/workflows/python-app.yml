@@ -15,14 +15,15 @@ jobs:
         steps:
             - name: Checar código
               uses: actions/checkout@v4
+
             - name: Instalar Python 3.14
               uses: actions/setup-python@v5
               with:
                 python-version: '3.14'
-                cache: 'poetry'
+                cache: 'pip'
+
             - name: Instalar Poetry
               run: pip install poetry
-            - name: Configurar Poetry
-              run: poetry config virtualenvs.in-project true
+
             - name: Instalar dependências do projeto
               run: poetry install --no-root --no-interaction
