@@ -46,16 +46,16 @@ async def mock_redis(monkeypatch):
 
 # =========================================================Testes=========================================================
 
-def test_autentificacao_de_requisicoes_falha():
-    resposta = APIclient.get(
+def test_autentificacao_de_requisicoes_falha(client):
+    resposta = client.get(
         '/livros',
         auth=('Jonatas','444')
     )
     assert resposta.status_code == 401
     assert resposta.json()["detail"] == "Senha ou usuario invalidos."
 
-def test_metodo_get_retorna_ok():
-    resposta = APIclient.get(
+def test_metodo_get_retorna_ok(client):
+    resposta = client.get(
         "/livros",
         auth=(LOGIN,SENHA)
     )
@@ -105,8 +105,8 @@ def test_metodo_delete_retorna_ok(client):
     )
     assert resposta.status_code == 200
 
-def test_metodo_get_retorna_ok_depois_de_livro_deletado():
-    resposta = APIclient.get(
+def test_metodo_get_retorna_ok_depois_de_livro_deletado(client):
+    resposta = client.get(
         "/livros",
         auth=(LOGIN,SENHA)
     )
