@@ -109,7 +109,7 @@ async def get_livros(page: int = 1, limit: int = 10, db: Session = Depends(sessi
     return resposta
 
 # Endpoint principal para o método POST: adiciona um livro no banco de dados e, para manter a consistência dos dados caso exista um cache salvo, ele é deletado.
-@app.post("/livros")
+@app.post("/livros", status_code=201)
 async def post_livros(livro: Livro, db: Session = Depends(session_db), credentials: HTTPBasicCredentials = Depends(autendicacao)):
     db_livro = db.query(LivroDB).filter(LivroDB.nome_livro == livro.nome_livro).first()
     if db_livro:

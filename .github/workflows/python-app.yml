@@ -27,3 +27,6 @@ jobs:
 
             - name: Instalar dependências do projeto
               run: poetry install --no-root --no-interaction
+
+            - name: Executar Testes da aplicação com Pytest
+              run: poetry run pytest
