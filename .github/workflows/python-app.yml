@@ -34,3 +34,9 @@ jobs:
                 LOGIN_USUARIO: "Arthur"
                 DATABASE_URL: "sqlite://"
               run: poetry run pytest
+
+            - name: Build imagem Docker
+              run: docker build -t fastapi-app:latest . 
+
+            - name: Rodar imagem Docker
+              run: docker run -d -p 8000:8000 --name api-container fastapi-app:latest
